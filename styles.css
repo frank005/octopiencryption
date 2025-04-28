@@ -311,4 +311,20 @@ button:disabled {
 
 .invite-button i {
     font-size: 14px;
+}
+
+.github-link {
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+    transition: transform 0.3s ease;
+}
+
+.github-link:hover {
+    transform: scale(1.1);
+    color: var(--highlight-color);
+}
+
+.github-link svg {
+    fill: currentColor;
 } 
