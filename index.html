@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octopi Encryption Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.agora.io/sdk/release/AgoraRTC_N.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <header>
+                <div class="header-content">
+                    <div class="title-section">
+                        <h1>🐙 Deep Sea Octopi Encryption</h1>
+                        <p class="subtitle">Secure your video calls in the depths of encryption</p>
+                    </div>
+                    <div class="invite-controls">
+                        <label class="auto-join-label">
+                            <input type="checkbox" id="auto-join" checked>
+                            Auto Join
+                        </label>
+                        <button id="generate-invite" class="invite-button">
+                            <i class="fas fa-link"></i> Generate Invite
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="controls-panel">
+                <div class="control-row">
+                    <div class="form-group">
+                        <label for="appid">App ID</label>
+                        <input type="text" id="appid" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="channel">Channel</label>
+                        <input type="text" id="channel" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="token">Token (Optional)</label>
+                        <input type="text" id="token">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uid">UID (Optional)</label>
+                        <input type="text" id="uid">
+                    </div>
+                </div>
+
+                <div class="control-row">
+                    <div class="form-group">
+                        <label for="encryption-mode">Encryption Mode</label>
+                        <select id="encryption-mode">
+                            <option value="none">None</option>
+                            <option value="aes-128-xts">AES-128-XTS</option>
+                            <option value="aes-256-xts">AES-256-XTS</option>
+                            <option value="aes-128-ecb">AES-128-ECB</option>
+                            <option value="sm4-128-ecb">SM4-128-ECB</option>
+                            <option value="aes-128-gcm">AES-128-GCM</option>
+                            <option value="aes-256-gcm">AES-256-GCM</option>
+                            <option value="aes-128-gcm2">AES-128-GCM2 (with salt)</option>
+                            <option value="aes-256-gcm2">AES-256-GCM2 (with salt)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="encryption-secret">Encryption Secret</label>
+                        <input type="text" id="encryption-secret" placeholder="Enter encryption secret">
+                    </div>
+
+                    <div class="form-group salt-input" style="display: none;">
+                        <label for="encryption-salt">Encryption Salt</label>
+                        <input type="text" id="encryption-salt" placeholder="Enter encryption salt">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="encrypt-data-stream">
+                            <label for="encrypt-data-stream">Encrypt Data Stream</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="camera">Camera</label>
+                        <select id="camera"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="microphone">Microphone</label>
+                        <select id="microphone"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video-profile">Video Profile</label>
+                        <select id="video-profile"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" id="join">Join Channel</button>
+                <button type="button" id="leave" disabled>Leave Channel</button>
+                <button type="button" id="toggle-camera" disabled>Mute Camera</button>
+                <button type="button" id="toggle-mic" disabled>Mute Mic</button>
+                <button type="button" id="toggle-encryption">Enable Encryption</button>
+            </div>
+
+            <div class="video-container">
+                <div id="local-player" class="player"></div>
+                <div id="remote-playerlist"></div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html> 
