@@ -79,6 +79,23 @@ header {
     margin-bottom: 1rem;
 }
 
+.channel-controls {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.encryption-controls .form-group {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+}
+
+.device-controls .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
 .form-group {
     flex: 1;
     min-width: 200px;
@@ -93,8 +110,12 @@ label {
     font-size: 0.9rem;
 }
 
-input, select {
+/* Base input styles */
+input[type="text"],
+select {
     padding: 0.75rem;
+    line-height: 1.2;
+    box-sizing: border-box;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     background: var(--primary-color);
@@ -115,6 +136,10 @@ input:focus, select:focus {
     margin-bottom: 1rem;
     flex-wrap: wrap;
 }
+.action-buttons button {
+    flex: 1;
+    min-width: 150px;
+}
 
 button {
     padding: 0.75rem 1.5rem;
@@ -126,8 +151,6 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    flex: 1;
-    min-width: 150px;
 }
 
 button:hover {
@@ -186,15 +209,25 @@ button:disabled {
     gap: 0.5rem;
 }
 
+.salt-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salt-container .input-with-button {
+    flex: 0 0 auto !important;
+}
+
 .checkbox-group {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.5rem;
+    white-space: nowrap;
+    margin: 0;
 }
 
 .checkbox-group input[type="checkbox"] {
-    width: auto;
     margin: 0;
 }
 
@@ -327,4 +360,54 @@ button:disabled {
 
 .github-link svg {
     fill: currentColor;
-} 
+}
+
+/* Base input-with-button styles */
+.input-with-button {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+}
+
+/* Reset any conflicting flex properties */
+.salt-container .input-with-button,
+.encryption-controls .input-with-button {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+/* Ensure both inputs behave the same */
+.input-with-button input {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+/* Make both buttons behave identically */
+.input-with-button button.generate-button,
+#generate-key.generate-button,
+#generate-salt.generate-button {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    width: 24px !important;
+    padding: 0 !important;
+    margin: 0 4px 0 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+}
+
+/* Salt container layout */
+.salt-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+/* Ensure checkbox group doesn't grow */
+.checkbox-group {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}

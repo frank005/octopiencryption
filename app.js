@@ -142,8 +142,9 @@ async function createLocalTracks() {
         localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
             encoderConfig: "music_standard"
         });
+        const selectedProfile = document.getElementById("video-profile").value;
         localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
-            encoderConfig: "720p_1"
+            encoderConfig: selectedProfile
         });
         localTracks.videoTrack.play("local-player");
     } catch (error) {
@@ -247,7 +248,12 @@ async function loadParametersFromUrl() {
     if (params.has("channel")) document.getElementById("channel").value = params.get("channel");
     if (params.has("token")) document.getElementById("token").value = params.get("token");
     if (params.has("uid")) document.getElementById("uid").value = params.get("uid");
-    if (params.has("mode")) document.getElementById("encryption-mode").value = params.get("mode");
+    if (params.has("mode")) {
+        const encryptionMode = document.getElementById("encryption-mode");
+        encryptionMode.value = params.get("mode");
+        // Trigger the change event to show/hide salt input
+        encryptionMode.dispatchEvent(new Event('change'));
+    }
     if (params.has("secret")) document.getElementById("encryption-secret").value = params.get("secret");
     if (params.has("salt")) document.getElementById("encryption-salt").value = params.get("salt");
     if (params.has("encryptDataStream")) document.getElementById("encrypt-data-stream").checked = params.get("encryptDataStream") === "true";
@@ -481,10 +487,38 @@ async function leave() {
     }
 }
 
+// Generate hex key
+function generateHexKey(bytes = 32) {
+    const array = new Uint8Array(bytes);
+    window.crypto.getRandomValues(array);
+    return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Generate base64 salt
+function generateBase64Salt(bytes = 32) {
+    const array = new Uint8Array(bytes);
+    window.crypto.getRandomValues(array);
+    return btoa(String.fromCharCode(...array));
+}
+
 // Event listeners
 document.addEventListener("DOMContentLoaded", () => {
     initClient();
     initDevices();
+
+    // Generate key button
+    document.getElementById("generate-key").addEventListener("click", () => {
+        const key = generateHexKey();
+        document.getElementById("encryption-secret").value = key;
+        addEventPopup("Generated new encryption key", "success");
+    });
+
+    // Generate salt button
+    document.getElementById("generate-salt").addEventListener("click", () => {
+        const salt = generateBase64Salt();
+        document.getElementById("encryption-salt").value = salt;
+        addEventPopup("Generated new encryption salt", "success");
+    });
 
     // Join button
     document.getElementById("join").addEventListener("click", join);
@@ -518,7 +552,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Video profile change
     document.getElementById("video-profile").addEventListener("change", async (e) => {
         if (localTracks.videoTrack) {
+            console.log("Changing video profile to:", e.target.value);
             await localTracks.videoTrack.setEncoderConfiguration(e.target.value);
+            addEventPopup(`Video profile changed to ${e.target.value}`, "info");
         }
     });
 

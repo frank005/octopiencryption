@@ -35,7 +35,7 @@
             </header>
 
             <div class="controls-panel">
-                <div class="control-row">
+                <div class="control-row channel-controls">
                     <div class="form-group">
                         <label for="appid">App ID</label>
                         <input type="text" id="appid" required>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
 
-                <div class="control-row">
+                <div class="control-row encryption-controls">
                     <div class="form-group">
                         <label for="encryption-mode">Encryption Mode</label>
                         <select id="encryption-mode">
@@ -75,18 +75,32 @@
 
                     <div class="form-group">
                         <label for="encryption-secret">Encryption Secret</label>
-                        <input type="text" id="encryption-secret" placeholder="Enter encryption secret">
+                        <div class="input-with-button">
+                            <input type="text" id="encryption-secret" placeholder="Enter encryption secret">
+                            <button type="button" id="generate-key" class="generate-button" title="Generate random key">
+                                <i class="fas fa-key"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="form-group salt-input" style="display: none;">
                         <label for="encryption-salt">Encryption Salt</label>
-                        <input type="text" id="encryption-salt" placeholder="Enter encryption salt">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="encrypt-data-stream">
-                            <label for="encrypt-data-stream">Encrypt Data Stream</label>
+                        <div class="salt-container">
+                            <div class="input-with-button">
+                                <input type="text" id="encryption-salt" placeholder="Enter encryption salt">
+                                <button type="button" id="generate-salt" class="generate-button" title="Generate random salt">
+                                    <i class="fas fa-shield-alt"></i>
+                                </button>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="encrypt-data-stream">
+                                <label for="encrypt-data-stream">Encrypt Data Stream</label>
+                            </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="control-row device-controls">
                     <div class="form-group">
                         <label for="camera">Camera</label>
                         <select id="camera"></select>
