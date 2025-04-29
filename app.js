@@ -103,49 +103,63 @@ function handleUserLeft(user) {
 // Initialize devices
 async function initDevices() {
     try {
-        // Get cameras
-        const cameras = await AgoraRTC.getCameras();
+        // Get all devices using Agora
+        const devices = await AgoraRTC.getDevices();
+        console.log("Available devices:", devices);
+
+        // Filter devices by kind
+        const cameras = devices.filter(device => device.kind === "videoinput");
+        const microphones = devices.filter(device => device.kind === "audioinput");
+
+        // Populate camera select
         const cameraSelect = document.getElementById("camera");
-        cameras.forEach(camera => {
-            const option = document.createElement("option");
-            option.value = camera.deviceId;
-            option.text = camera.label;
-            cameraSelect.appendChild(option);
-        });
+        cameraSelect.innerHTML = cameras.map(camera => 
+            `<option value="${camera.deviceId}">${camera.label || `Camera ${camera.deviceId}`}</option>`
+        ).join('');
 
-        // Get microphones
-        const microphones = await AgoraRTC.getMicrophones();
+        // Populate microphone select
         const microphoneSelect = document.getElementById("microphone");
-        microphones.forEach(microphone => {
-            const option = document.createElement("option");
-            option.value = microphone.deviceId;
-            option.text = microphone.label;
-            microphoneSelect.appendChild(option);
-        });
+        microphoneSelect.innerHTML = microphones.map(microphone => 
+            `<option value="${microphone.deviceId}">${microphone.label || `Microphone ${microphone.deviceId}`}</option>`
+        ).join('');
 
-        // Initialize video profiles
+        // Initialize video profiles with 720p_2 as default
         const videoProfileSelect = document.getElementById("video-profile");
         videoProfiles.forEach(profile => {
             const option = document.createElement("option");
             option.value = profile.value;
             option.text = `${profile.label}: ${profile.detail}`;
+            option.selected = profile.value === "720p_2"; // Set default
             videoProfileSelect.appendChild(option);
         });
+
+        if (!cameras.length && !microphones.length) {
+            addEventPopup("No camera or microphone detected. Please connect a device and refresh.", "error");
+        }
     } catch (error) {
         console.error("Error initializing devices:", error);
+        addEventPopup("Error accessing media devices. Please ensure you have devices connected and permissions granted.", "error");
     }
 }
 
 // Create local tracks
 async function createLocalTracks() {
     try {
+        // Get selected devices
+        const cameraId = document.getElementById("camera").value;
+        const microphoneId = document.getElementById("microphone").value;
+
+        // Create tracks with selected devices
         localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-            encoderConfig: "music_standard"
+            encoderConfig: "music_standard",
+            microphoneId: microphoneId || undefined
         });
-        const selectedProfile = document.getElementById("video-profile").value;
+        
         localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({
-            encoderConfig: selectedProfile
+            encoderConfig: "720p_2",
+            cameraId: cameraId || undefined
         });
+        
         localTracks.videoTrack.play("local-player");
     } catch (error) {
         console.error("Error creating local tracks:", error);

@@ -70,6 +70,7 @@ header {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 .control-row {
@@ -77,6 +78,7 @@ header {
     flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 .channel-controls {
@@ -102,6 +104,7 @@ header {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    width: 100%;
 }
 
 label {
@@ -113,6 +116,7 @@ label {
 /* Base input styles */
 input[type="text"],
 select {
+    width: 100%;
     padding: 0.75rem;
     line-height: 1.2;
     box-sizing: border-box;
@@ -122,6 +126,17 @@ select {
     color: var(--text-color);
     font-size: 1rem;
     transition: all 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e6e6e6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.7em top 50%;
+    background-size: 1em auto;
+    padding-right: 2.5em;
 }
 
 input:focus, select:focus {
@@ -216,25 +231,12 @@ button:disabled {
 }
 
 .salt-container .input-with-button {
-    flex: 0 0 auto !important;
+    flex: 1;
 }
 
 .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    flex: 0 0 auto;
     white-space: nowrap;
-    margin: 0;
-}
-
-.checkbox-group input[type="checkbox"] {
-    margin: 0;
-}
-
-.checkbox-group label {
-    margin: 0;
-    font-weight: normal;
-    color: var(--text-color);
 }
 
 .event-popup {
@@ -364,49 +366,44 @@ button:disabled {
 
 /* Base input-with-button styles */
 .input-with-button {
+    position: relative;
     display: flex;
     align-items: stretch;
-    position: relative;
 }
 
-/* Reset any conflicting flex properties */
-.salt-container .input-with-button,
-.encryption-controls .input-with-button {
-    flex: 1 !important;
-    min-width: 0 !important;
-}
-
-/* Ensure both inputs behave the same */
 .input-with-button input {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    width: 100% !important;
-}
-
-/* Make both buttons behave identically */
-.input-with-button button.generate-button,
-#generate-key.generate-button,
-#generate-salt.generate-button {
-    flex: 0 0 auto !important;
-    min-width: 0 !important;
-    width: 24px !important;
-    padding: 0 !important;
-    margin: 0 4px 0 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    align-self: stretch !important;
-}
-
-/* Salt container layout */
-.salt-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     width: 100%;
 }
 
-/* Ensure checkbox group doesn't grow */
+.input-with-button button.generate-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.input-with-button input {
+    padding-right: 45px; /* Make room for the button */
+}
+
+/* Ensure salt container maintains proper layout */
+.salt-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salt-container .input-with-button {
+    flex: 1;
+}
+
 .checkbox-group {
     flex: 0 0 auto;
     white-space: nowrap;
